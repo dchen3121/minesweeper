@@ -1,0 +1,42 @@
+name: Minesweeper
+options:
+  bundleIdPrefix: com.dchen.minesweeper
+  deploymentTarget:
+    iOS: "17.0"
+  xcodeVersion: "16.0"
+  generateEmptyDirectories: true
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    TARGETED_DEVICE_FAMILY: "1,2"
+    INFOPLIST_KEY_UILaunchScreen_Generation: true
+    INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone: "UIInterfaceOrientationPortrait"
+    INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+    SWIFT_STRICT_CONCURRENCY: targeted
+
+targets:
+  Minesweeper:
+    type: application
+    platform: iOS
+    sources:
+      - path: Minesweeper
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.dchen.minesweeper
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Minesweeper
+        DEVELOPMENT_TEAM: R4Y658WZ3G
+        CODE_SIGN_STYLE: Automatic
+
+  MinesweeperTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: MinesweeperTests
+    dependencies:
+      - target: Minesweeper
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.dchen.minesweeper.tests
+        GENERATE_INFOPLIST_FILE: YES

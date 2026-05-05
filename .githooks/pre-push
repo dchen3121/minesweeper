@@ -1,0 +1,31 @@
+#!/bin/bash
+
+echo "Running tests before push..."
+
+SCRIPT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+
+if [ ! -d "$SCRIPT_DIR/Minesweeper/Minesweeper.xcodeproj" ]; then
+    echo "Generating Xcode project..."
+    (cd "$SCRIPT_DIR/Minesweeper" && xcodegen generate) || {
+        echo "xcodegen failed. Aborting push."
+        exit 1
+    }
+fi
+
+xcodebuild test \
+    -project "$SCRIPT_DIR/Minesweeper/Minesweeper.xcodeproj" \
+    -scheme Minesweeper \
+    -destination 'platform=iOS Simulator,name=iPhone 16' \
+    -derivedDataPath "$SCRIPT_DIR/build" \
+    -quiet \
+    CODE_SIGNING_ALLOWED=NO
+
+if [ $? -ne 0 ]; then
+    echo ""
+    echo "Tests failed. Push aborted."
+    echo "Run tests manually to see details:"
+    echo "  xcodebuild test -project Minesweeper/Minesweeper.xcodeproj -scheme Minesweeper -destination 'platform=iOS Simulator,name=iPhone 16' -derivedDataPath build"
+    exit 1
+fi
+
+echo "All tests passed. Pushing..."
